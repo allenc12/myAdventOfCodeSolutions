@@ -7,7 +7,6 @@ def part1(lines: list[str]) -> int:
         rotate_by = int(rotation[1:])
         if rotation[0] == 'R':
             dial_index = (dial_index + rotate_by) % 100
-            pass
         else: # assume it's 'L'
             dial_index = (dial_index - rotate_by) % 100
         if dial_index == 0:
@@ -20,12 +19,14 @@ def part2(lines: list[str]) -> int:
     new_index = 0
     for rotation in lines:
         rotate_by = int(rotation[1:])
+        times_passed_zero += int(rotate_by / 100)
+        rotate_by %= 100
         if rotation[0] == 'R':
             new_index = (dial_index + rotate_by)
         else: # assume it's 'L'
             new_index = (dial_index - rotate_by)
-        if new_index >= 100 or new_index < 0 or new_index == 0:
-            times_passed_zero += (abs(new_index) // 100) + 1 if new_index%100==0 else 0
+        if new_index == 100 or new_index == 0:
+            times_passed_zero += 1
         dial_index = new_index % 100
     return times_passed_zero
 
@@ -58,9 +59,16 @@ puzzle_input = open("2025/inputs/day01.txt").read().splitlines()
 print("part 1: ", part1(puzzle_input))
 
 test2 = """R1000
-L1000
+L1050
 L50""".splitlines()
 
+incorrect = [
+    5900,
+    6294,
+    2496,
+    4868
+]
+
 print("part2(test1) (expect 6): ", part2(test1))
-print("part2(test2) (expect 10): ", part2(test2))
+print("part2(test2) (expect 22): ", part2(test2))
 print("part 2: ", part2(puzzle_input))
