@@ -27,3 +27,6 @@ L99
 R14
 L82""".splitlines()
 print(part1(test1))
+
+puzzle_input = open("2025/inputs/day01.txt").read().splitlines()
+print(part1(puzzle_input))
