@@ -17,8 +17,10 @@ def consecutive_digits(num: int) -> int:
 
 def check_subsequence(num: int) -> int:
     num_str = str(num)
-    for i in range(1,len(num_str)//2):
-        if len(set([num_str[j:j+i] for j in range(0,len(num_str),i)])) == 1:
+    for i in range(1,len(num_str)):
+        splits = [num_str[j:j+i] for j in range(0,len(num_str),i)]
+        if len(set(splits)) == 1:
+            # print(splits)
             return num
     return 0
 
@@ -48,5 +50,6 @@ check_test(part1, test1, 1227775554)
 id_list_input = [split_id_range(id_range) for id_range in open("2025/inputs/day02.txt").read().split(',')]
 
 check_test(part1, id_list_input, 28844599675)
-
+print("===================================================")
 check_test(part2, test1, 4174379265)
+check_test(part2, id_list_input, 0)
