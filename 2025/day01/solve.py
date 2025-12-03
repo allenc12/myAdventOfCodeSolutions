@@ -1,4 +1,5 @@
 import operator
+from typing import LiteralString, Sequence
 
 def part1(lines: list[str]) -> int:
     times_on_zero = 0
@@ -31,16 +32,28 @@ def part2(lines: list[str]) -> int:
     return times_passed_zero
 
 
-# def part2_gubgar_method(lines: list[str]) -> int:
-#     ret = 0
-#     idx = 50
-#     rot = None
-#     for l in lines:
-#         d,v = l[0], int(l[1:])
-#         if d == "R":
-#             rot = operator.add
-#         else:
-#             rot = operator.sub
+def part2_gubgar_method(lines: list[str]) -> int:
+    ret = 0
+    idx = 50
+    rot = None
+    for l in lines:
+        d,v = l[0], int(l[1:])
+        if d == "R":
+            rot = operator.add
+        else:
+            rot = operator.sub
+        while True:
+            idx = rot(idx, 1)
+            v -= 1
+            if idx == 100:
+                idx = 0
+            elif idx < 0:
+                idx = 99
+            if idx == 0:
+                ret += 1
+            if v == 0:
+                break
+    return ret
         
 
 test1 = """L68
@@ -59,7 +72,7 @@ puzzle_input = open("2025/inputs/day01.txt").read().splitlines()
 print("part 1: ", part1(puzzle_input))
 
 test2 = """R1000
-L1050
+L1000
 L50""".splitlines()
 
 incorrect = [
@@ -69,6 +82,6 @@ incorrect = [
     4868
 ]
 
-print("part2(test1) (expect 6): ", part2(test1))
-print("part2(test2) (expect 22): ", part2(test2))
-print("part 2: ", part2(puzzle_input))
+print("part2(test1) (expect 6): ", part2_gubgar_method(test1))
+print("part2(test2) (expect 22): ", part2_gubgar_method(test2))
+print("part 2: (expect 5899)", part2_gubgar_method(puzzle_input))
