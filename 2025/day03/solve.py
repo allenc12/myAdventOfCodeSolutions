@@ -17,8 +17,17 @@ def part1(input_banks: list[list[int]]) -> int:
     return sum(map(find_max_joltage, input_banks))
 
 
+def check_joltage(bank: list[int], jolt: int) -> tuple[list[int], int]:
+    if not bank:
+        return (bank, jolt)
+    cm = max(bank)
+    ci = bank.index(cm)
+    
+
+
 def find_max_joltage_big(bank: list[int]) -> int:
     max_joltage = 0
+    lst = list(enumerate(bank)) # (index, value)
     # take groups of 12 digits?
     # fuggit we do this recursively later
     #return max(map(lambda x: functools.reduce(lambda y,z: y*10 + z, x), itertools.combinations(bank, 12)))
