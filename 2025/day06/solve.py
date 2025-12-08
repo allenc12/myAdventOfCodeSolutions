@@ -1,8 +1,9 @@
-# import aoctools
-import itertools
+from aoc_utils import aoc_utils
 import functools
 import operator
 import numpy as np
+
+problem_input = aoc_utils.fetch_and_save(2025, 6)
 
 class MathsHomework:
     def __init__(self, math_problems: list[str]):
@@ -30,6 +31,17 @@ def check_test(fn, test_input, expected_result=None):
         print(f" == {expected_result}: {result == expected_result}", end="")
     print()
 
+test_cases = [
+    {
+        'level': 1,
+        'input': """123 328  51 64 
+ 45 64  387 23 
+  6 98  215 314
+*   +   *   +  
+""",
+        'output': 4277556,
+    }
+]
 
 test_str1 = """123 328  51 64 
  45 64  387 23 
@@ -37,10 +49,16 @@ test_str1 = """123 328  51 64
 *   +   *   +  
 """.splitlines()
 
-t1 = MathsHomework(test_str1)
-check_test(t1.part1_sum, None, 4277556)
 
-maths_work = MathsHomework(open("2025/inputs/day06.txt").read().splitlines())
-"""
-1725757359 too low"""
-check_test(maths_work.part1_sum, None)
+def answer(inputs="", level=0, test=False):
+    homework = MathsHomework(inputs.splitlines())
+    return homework.part1_sum(test)
+
+
+# t1 = MathsHomework(test_str1)
+# check_test(t1.part1_sum, None, 4277556)
+aoc_utils.test(answer, test_cases)
+# maths_work = MathsHomework(problem_input.splitlines())
+# """
+# 1725757359 too low"""
+# check_test(maths_work.part1_sum, None, expected_result=1725757360)

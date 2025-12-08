@@ -1,4 +1,7 @@
 from collections import defaultdict
+from aoc_utils import aoc_utils
+
+problem_input = aoc_utils.fetch_and_save(2025, 4)
 
 ADJACENT8 = [
     [0,1],[1,0],[-1,0],[0,-1],
@@ -75,7 +78,7 @@ test_map = """..@@.@@@@.
 @.@.@@@.@.
 """.splitlines()
 
-paper_roll_map = open("2025/inputs/day04.txt").read().splitlines()
+paper_roll_map = problem_input.splitlines()
 check_test(part1, test_map, 13)
 check_test(part1, paper_roll_map)
 

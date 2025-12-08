@@ -1,5 +1,8 @@
 import operator
 from typing import LiteralString, Sequence
+from aoc_utils import aoc_utils
+
+puzzle_input = aoc_utils.fetch_and_save(2025, 1)
 
 def part1(lines: list[str]) -> int:
     times_on_zero = 0
@@ -68,7 +71,7 @@ R14
 L82""".splitlines()
 print("test 1 (expect 3): ", part1(test1))
 
-puzzle_input = open("2025/inputs/day01.txt").read().splitlines()
+# puzzle_input = open("2025/inputs/day01.txt").read().splitlines()
 print("part 1: ", part1(puzzle_input))
 
 test2 = """R1000

@@ -1,4 +1,8 @@
 from collections import Counter
+from aoc_utils import aoc_utils
+
+problem_input = aoc_utils.fetch_and_save(2025, 2)
+
 def part1(id_list: list[tuple[int,int]]) -> int:
     invalid_ids = []
     for start, end in id_list:
@@ -47,7 +51,7 @@ test1 = [split_id_range(id_range) for id_range in
 
 check_test(part1, test1, 1227775554)
 
-id_list_input = [split_id_range(id_range) for id_range in open("2025/inputs/day02.txt").read().split(',')]
+id_list_input = [split_id_range(id_range) for id_range in problem_input.split(',')]
 
 check_test(part1, id_list_input, 28844599675)
 print("===================================================")

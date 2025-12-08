@@ -1,5 +1,8 @@
 import itertools
 import functools
+from aoc_utils import aoc_utils
+
+problem_input = aoc_utils.fetch_and_save(2025, 3)
 
 digits = [(x,y) for x in range(10) for y in range(10)][::-1]
 
@@ -70,7 +73,7 @@ battery_banks = """987654321111111
 818181911112111""".splitlines()
 battery_banks = [[int(ch) for ch in line] for line in battery_banks]
 
-escalator_battery_banks = lines_to_ints(open("2025/inputs/day03.txt").read().splitlines())
+escalator_battery_banks = lines_to_ints(problem_input.splitlines())
 
 check_test(find_max_joltage_big, lines_to_ints(["987654321111111"])[0], 987654321111)
 

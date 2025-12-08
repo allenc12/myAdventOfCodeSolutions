@@ -1,3 +1,30 @@
+from aoc_utils import aoc_utils
+
+problem_input = aoc_utils.fetch_and_save(2025, 5)
+
+class FreshIngredients:
+    def __init__(self, input_id_list: str):
+        ranges, ids = input_id_list.split("\n\n")
+        # example range, way too big for set structure: 161774338930928-162461408006849
+        # use list of ranges to check ids
+        self.fresh_id_ranges = []
+        for pair in ranges.splitlines():
+            lower,upper = pair.split('-')
+            self.fresh_id_ranges.append((int(lower), int(upper)))
+            # self.fresh_id_ranges.append(range(int(lower), int(upper)))
+        self.fresh_id_ranges.sort()
+        self.ids_to_check = list(map(int, ids.splitlines()))
+    
+    def total_fresh_ingredient_ids(self):
+        total = 0
+        for id in self.ids_to_check:
+            for id_range in self.fresh_id_ranges:
+                # an id is fresh if it is contained in _any_ range
+                if id >= id_range[0] and id <= id_range[1]:
+                    total += 1
+                    break
+        return total
+
 
 def part1(id_list: FreshIngredients):
     return id_list.total_fresh_ingredient_ids()
@@ -57,28 +84,6 @@ def part2(id_list: FreshIngredients):
     total_ids = sum(map(lambda x: x[1]-x[0]+1, cur_ranges))
     return total_ids
 
-class FreshIngredients:
-    def __init__(self, input_id_list: str):
-        ranges, ids = input_id_list.split("\n\n")
-        # example range, way too big for set structure: 161774338930928-162461408006849
-        # use list of ranges to check ids
-        self.fresh_id_ranges = []
-        for pair in ranges.splitlines():
-            lower,upper = pair.split('-')
-            self.fresh_id_ranges.append((int(lower), int(upper)))
-            # self.fresh_id_ranges.append(range(int(lower), int(upper)))
-        self.fresh_id_ranges.sort()
-        self.ids_to_check = list(map(int, ids.splitlines()))
-    
-    def total_fresh_ingredient_ids(self):
-        total = 0
-        for id in self.ids_to_check:
-            for id_range in self.fresh_id_ranges:
-                # an id is fresh if it is contained in _any_ range
-                if id >= id_range[0] and id <= id_range[1]:
-                    total += 1
-                    break
-        return total
 
 def check_test(fn, test_input, expected_result=None):
     result = fn(test_input)
@@ -105,7 +110,7 @@ test_str1 = """3-5
 """
 test_ingredient_ids = FreshIngredients(test_str1)
 
-ingredient_ids = FreshIngredients(open("2025/inputs/day05.txt").read())
+ingredient_ids = FreshIngredients(problem_input)
 
 
 check_test(part1, test_ingredient_ids, 3)
