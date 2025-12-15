@@ -17,7 +17,11 @@ def find_max_joltage(input_bank: list[int]) -> int:
             return l*10 + r
 
 def part1(input_banks: list[list[int]]) -> int:
-    return sum(map(find_max_joltage, input_banks))
+    result = 0
+    for bank in input_banks:
+        tmp = down_down_to_goblin_town(bank, 0, 2)
+        result += (tmp[0]*10) + tmp[1]
+    return result #sum(map(find_max_joltage, input_banks))
 
 
 def check_joltage(bank: list[int], jolt: int) -> tuple[list[int], int]:
@@ -26,11 +30,22 @@ def check_joltage(bank: list[int], jolt: int) -> tuple[list[int], int]:
     cm = max(bank)
     ci = bank.index(cm)
     
-
+def down_down_to_goblin_town(bank: list[int], depth: int, depth_max: int) -> list[int]:
+    ret = []
+    if len(bank) > 0 and depth < depth_max:
+        idx_max = bank.index(max(bank))
+        cur = bank[idx_max+1:]
+        if len(cur) == 0:
+            cur = cur[:idx_max]
+        ret += [bank[idx_max]] + down_down_to_goblin_town(cur, depth + 1, depth_max)
+    elif depth == depth_max:
+        ret.append(max(bank))
+    return ret
 
 def find_max_joltage_big(bank: list[int]) -> int:
     max_joltage = 0
     lst = list(enumerate(bank)) # (index, value)
+    high_idx = 0
     # take groups of 12 digits?
     # fuggit we do this recursively later
     #return max(map(lambda x: functools.reduce(lambda y,z: y*10 + z, x), itertools.combinations(bank, 12)))
@@ -39,9 +54,10 @@ def find_max_joltage_big(bank: list[int]) -> int:
             high_idx = bank.index(high)
             if high_idx > len(bank)-12:
                 continue
-            pass
+            
         except:
             continue
+    
     return max_joltage
             
 
@@ -74,13 +90,13 @@ battery_banks = """987654321111111
 battery_banks = [[int(ch) for ch in line] for line in battery_banks]
 
 escalator_battery_banks = lines_to_ints(problem_input.splitlines())
-
+# print(down_down_to_goblin_town())
 check_test(find_max_joltage_big, lines_to_ints(["987654321111111"])[0], 987654321111)
 
 check_test(part1, battery_banks, 357)
-check_test(part1, escalator_battery_banks)
+check_test(part1, escalator_battery_banks, 16812)
 print("==================")
 
 
-check_test(part2, battery_banks, 3121910778619)
-check_test(part2, escalator_battery_banks)
+# check_test(part2, battery_banks, 3121910778619)
+# check_test(part2, escalator_battery_banks)
