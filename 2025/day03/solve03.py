@@ -19,8 +19,10 @@ def find_max_joltage(input_bank: list[int]) -> int:
 def part1(input_banks: list[list[int]]) -> int:
     result = 0
     for bank in input_banks:
-        tmp = down_down_to_goblin_town(bank, 0, 2)
-        result += (tmp[0]*10) + tmp[1]
+        # result += find_max_joltage(bank)
+        result += functools.reduce(lambda y,z: y*10+z, bank)
+        # tmp = down_down_to_goblin_town(bank, 0, 2)
+        # result += (tmp[0]*10) + tmp[1]
     return result #sum(map(find_max_joltage, input_banks))
 
 
@@ -42,21 +44,50 @@ def down_down_to_goblin_town(bank: list[int], depth: int, depth_max: int) -> lis
         ret.append(max(bank))
     return ret
 
+def recursive_blabbo(bank: list[int], index: int, length: int, max_length: int) -> list[int]:
+    if not bank or length >= max_length:
+        return []
+    cur_slice = bank[index:len(bank)-(max_length-length)]
+    cur_max = max(cur_slice)
+    cur_idx = cur_slice.index(cur_max)
+    return [cur_max] + recursive_blabbo(bank, cur_idx+1, length+1, max_length)
+
 def find_max_joltage_big(bank: list[int]) -> int:
     max_joltage = 0
-    lst = list(enumerate(bank)) # (index, value)
-    high_idx = 0
+    bank_indexes = list(enumerate(bank))
+    lst = sorted(bank_indexes, key=lambda x: x[1], reverse=True) # (index, value)
+    whee = 0
+    for i in range(len(lst)-12):
+        for j in range(i,i+12):
+            if lst[i][0] > lst[j][0]:
+                break
+            else:
+                whee += 1
+        if whee == 12:
+            break
+    print(whee, lst[whee:whee+12])
+    weh = lst[whee:whee+12]
+    high_idx = bank.index(max(bank))
     # take groups of 12 digits?
     # fuggit we do this recursively later
     #return max(map(lambda x: functools.reduce(lambda y,z: y*10 + z, x), itertools.combinations(bank, 12)))
-    for high in range(9, 0, -1):
-        try:
-            high_idx = bank.index(high)
-            if high_idx > len(bank)-12:
+    while high_idx > len(bank) - 12:
+        high_idx = bank.index(max(bank[0:high_idx]))
+    index_list = [high_idx]
+    while True:
+        if weh:
+            max_joltage = sum(map(lambda x: functools.reduce(lambda y,z: y*10+z, x), weh))
+            break
+        for ii in range(high_idx, len(bank)-12):
+            pass
+        for high in range(9, 0, -1):
+            try:
+                high_idx = bank.index(high)
+                if high_idx > len(bank)-12:
+                    continue
+                
+            except:
                 continue
-            
-        except:
-            continue
     
     return max_joltage
             
@@ -64,10 +95,10 @@ def find_max_joltage_big(bank: list[int]) -> int:
 
 def part2(input_banks: list[list[int]]) -> int:
     """12 digits this time"""
-    joltages = []
+    joltages = 0
     for bank in input_banks:
-        find_max_joltage_big(bank)
-    return sum(joltages)
+        joltages += find_max_joltage_big(bank)
+    return joltages
 
 def lines_to_ints(lines: list[str]) -> list[list[int]]:
     ret = []
@@ -98,5 +129,5 @@ check_test(part1, escalator_battery_banks, 16812)
 print("==================")
 
 
-# check_test(part2, battery_banks, 3121910778619)
+check_test(part2, battery_banks, 3121910778619)
 # check_test(part2, escalator_battery_banks)
